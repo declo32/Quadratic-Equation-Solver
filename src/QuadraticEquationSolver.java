@@ -42,32 +42,19 @@ public class QuadraticEquationSolver {
 	}
 
 	public Radical[] getZeros() {
-		double discriminant = Math.pow(coefficient2, 2) - (4* coefficient1 * constant);
+		double discriminant = Math.pow(coefficient2, 2) - (4 * coefficient1 * constant);
 
-		if (discriminant == 0) {
-			Radical[] zeros = {
-					new Radical(
-							Complex.fromDouble(-coefficient2/(2*coefficient1)),
-							Complex.ZERO,
-							discriminant, false
-					)
-			};
+		Radical zero1 = new Radical(
+				Complex.fromDouble(-coefficient2 / (2 * coefficient1)),
+				Complex.ZERO,
+				discriminant, false
+		);
 
+		if (zero1.hasConjugate()) {
+			Radical[] zeros = {zero1, zero1.getConjugate()};
 			return zeros;
 		} else {
-			Radical[] zeros = {
-					new Radical(
-							Complex.fromDouble(-coefficient2/(2*coefficient1)),
-							Complex.fromDouble(1/(2*coefficient1)),
-							discriminant, true
-					),
-					new Radical(  // the same thing, but the scalar is negative
-							Complex.fromDouble(-coefficient2/(2*coefficient1)),
-							Complex.fromDouble(-1/(2*coefficient1)),
-							discriminant, true
-					)
-			};
-
+			Radical[] zeros = {zero1};
 			return zeros;
 		}
 	}

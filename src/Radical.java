@@ -50,6 +50,14 @@ public class Radical {
 		this.radicand = radicand;
 	}
 
+	public boolean hasConjugate() {
+		return (scalar.equals(Complex.ZERO) || radicand == 0);
+	}
+
+	public Radical getConjugate() {
+		return new Radical(translator, scalar.multiply(Complex.fromDouble(-1)), radicand, false);
+	}
+
 	@Override
 	public String toString() {
 		return "Radical{" +
