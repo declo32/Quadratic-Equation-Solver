@@ -14,7 +14,7 @@ public class Complex {
 	 * @param imaginaryPart The imaginary part of the complex number
 	 * @param magnitude The magnitude of the complex number's vector on the complex plane
 	 * @param angle The angle that the complex number's vector makes with the positive real axis on the complex plane
-	 *              in degrees.
+	 *              in radians.
 	 */
 	private Complex(double realPart, double imaginaryPart, double magnitude, double angle) {
 		this.realPart = realPart;
@@ -42,7 +42,7 @@ public class Complex {
 	 * Creates a new <code>Complex</code> object from polar coordinates on the complex plane.
 	 * @param magnitude The magnitude of the complex number's vector on the complex plane
 	 * @param angle The angle that the complex number's vector makes with the positive real axis on the complex plane
-	 *              in degrees
+	 *              in radians
 	 * @return A new <code>Complex</code> object representing a complex number with the specified components
 	 */
 	public static Complex fromPolar(double magnitude, double angle) {
