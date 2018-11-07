@@ -63,15 +63,15 @@ public class Radical {
 		Complex scalarNew = scalar;
 		double radicandNew = radicand;
 
+		if (radicand < 0) {  // Factor out -1 from radicand, bring i to scalar
+			scalarNew = scalarNew.multiply(Complex.I);
+			radicandNew = -radicandNew;
+		}
+
 		if (radicand % 1 == 0) {  // if there is no decimal part
 			int largestSquaredFactor = largestSquaredFactor((int) radicand);  // casting has no effect
 			scalarNew = scalarNew.multiply(Complex.fromDouble(Math.sqrt(largestSquaredFactor)));
 			radicandNew /= largestSquaredFactor;
-		}
-
-		if (radicand < 0) {  // Factor out -1 from radicand, bring i to scalar
-			scalarNew = scalarNew.multiply(Complex.I);
-			radicandNew = -radicandNew;
 		}
 
 		return new Radical(translator, scalarNew, radicandNew, false);  // true would cause an infinite loop

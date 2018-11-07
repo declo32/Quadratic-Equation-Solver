@@ -3,7 +3,7 @@ public class ComplexTester {
 		Complex[] cs = {
 				Complex.fromRect(1, 2),
 				Complex.fromPolar(1, Math.PI/2),
-				Complex.fromDouble(2)
+				Complex.fromDouble(2),
 		};
 
 		for (Complex c : cs) {
