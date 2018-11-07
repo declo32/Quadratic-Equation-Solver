@@ -6,10 +6,24 @@ public class Radical {
 	private Complex scalar;  // b
 	private double radicand;  // c
 
-	public Radical(Complex translator, Complex scalar, double radicand) {
+	public Radical(Complex translator, Complex scalar, double radicand, boolean simplify) {
 		this.translator = translator;
 		this.scalar = scalar;
 		this.radicand = radicand;
+
+		// If the scalar or radicand are zero, then the entire second term of a+b*sqrt(c) is zero, no use simplifying
+		if (scalar.equals(Complex.ZERO) || radicand == 0) {
+			simplify = false;
+			this.scalar = Complex.ZERO;
+			this.radicand = 0;
+		}
+
+		if (simplify) {
+			Radical simplified = this.simplify();
+			this.translator = simplified.getTranslator();
+			this.scalar = simplified.getScalar();
+			this.radicand = simplified.getRadicand();
+		}
 	}
 
 	public Complex getTranslator() {
@@ -46,18 +60,37 @@ public class Radical {
 	}
 
 	public Radical simplify() {
-		if ((int)radicand == radicand) {  // if there is no decimal part
-			Complex translatorNew;
-			Complex scalarNew;
-			double radicand;
+		Complex scalarNew = scalar;
+		double radicandNew = radicand;
 
-			int largestSquaredFactor = 1;
-			for (int i = 1; i <= Math.sqrt(this.radicand); ++i) {
-				if (this.radicand % Math.pow(i, 2) == 0) {  // if the square of i fits in evenly
-					largestSquaredFactor = i;
-				}
-			}
-			return new Radical()
+		if (radicand % 1 == 0) {  // if there is no decimal part
+			int largestSquaredFactor = largestSquaredFactor((int) radicand);  // casting has no effect
+			scalarNew = scalarNew.multiply(Complex.fromDouble(Math.sqrt(largestSquaredFactor)));
+			radicandNew /= largestSquaredFactor;
 		}
+
+		if (radicand < 0) {  // Factor out -1 from radicand, bring i to scalar
+			scalarNew = scalarNew.multiply(Complex.I);
+			radicandNew = -radicandNew;
+		}
+
+		return new Radical(translator, scalarNew, radicandNew, false);  // true would cause an infinite loop
+	}
+
+	/**
+	 * Get the largest perfect square integer which will factor evenly into some other integer.
+	 * @param n The integer to be factored
+	 * @return The largest perfect square integer which will factor evenly into <code>n</code>
+	 */
+	private int largestSquaredFactor(int n) {
+		int largestFactorWhenSquared = 1;
+
+		for (int i = 0; i <= Math.sqrt(n); ++i) {
+			if (n % Math.pow(i, 2) == 0) {
+				largestFactorWhenSquared = i;
+			}
+		}
+
+		return (int) Math.pow(largestFactorWhenSquared, 2);
 	}
 }
