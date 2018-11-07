@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 /**
  * Represents a number of the form a+bi
  */
@@ -6,6 +8,16 @@ public class Complex {
 	private double imaginaryPart;
 	private double magnitude;
 	private double angle;
+
+	/**
+	 * The imaginary unit, very common
+	 */
+	public static final Complex I = new Complex(0, 1, 1, Math.PI/2);
+
+	/**
+	 * An imaginary number with magnitude of zero
+	 */
+	public static final Complex ZERO = new Complex(0, 0, 0, 0);
 
 	/**
 	 * Represents a complex number. This constructor is never used because conflicts with the parameters could occur.
@@ -120,6 +132,22 @@ public class Complex {
 				'}';
 	}
 
+	/**
+	 * Compares this <code>Complex</code> object to another. Returns true if the objects' components match.
+	 * @param o The other object to compare this <code>Complex</code> object to
+	 * @return Whether or not the two objects' components match
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Complex complex = (Complex) o;
+		return Double.compare(complex.getRealPart(), getRealPart()) == 0 &&
+				Double.compare(complex.getImaginaryPart(), getImaginaryPart()) == 0 &&
+				Double.compare(complex.getMagnitude(), getMagnitude()) == 0 &&
+				Double.compare(complex.getAngle(), getAngle()) == 0;
+	}
+
 	public Complex add(Complex c) {
 		return Complex.fromRect(
 				this.realPart + c.realPart,
@@ -127,15 +155,15 @@ public class Complex {
 		);
 	}
 
+	public Complex subtract(Complex c) {
+		return this.add(c.multiply(Complex.fromDouble(-1)));
+	}
+
 	public Complex multiply(Complex c) {
 		return Complex.fromRect(
 				(this.realPart * c.realPart) - (this.imaginaryPart * c.imaginaryPart),
-				(this.realPart * c.imaginaryPart) + (c.realPart - c.imaginaryPart)
+				(this.realPart * c.imaginaryPart) + (c.realPart * c.imaginaryPart)
 		);
-	}
-
-	public Complex subtract(Complex c) {
-		return this.add(c.multiply(Complex.fromDouble(-1)));
 	}
 
 	public Complex divide(Complex c) {

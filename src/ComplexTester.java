@@ -9,5 +9,7 @@ public class ComplexTester {
 		for (Complex c : cs) {
 			System.out.println(c);
 		}
+
+		System.out.println(Complex.fromDouble(1).multiply(Complex.I));
 	}
 }
